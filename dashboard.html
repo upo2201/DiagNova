@@ -22,9 +22,7 @@
             <ul>
                 <li><a href="#" class="active">Home</a></li>
                 <li><a href="#">Symptom Checker</a></li>
-                <li><a href="#">Recommendations</a></li>
                 <li><a href="#">Emergency</a></li>
-                <li><a href="#">Nearby Help</a></li>
                 <li><a href="index.html">Logout</a></li>
             </ul>
         </nav>
@@ -43,7 +41,7 @@
         </header>
 
         <!-- Main Content Card -->
-        <section class="hero-section">
+        <section class="hero-section" id="home-section">
             <div class="hero-card">
                 <h2 class="card-title">Welcome to DiagNova</h2>
                 <p class="card-text">
@@ -52,8 +50,94 @@
                     accurate, real-time recommendations and support.
                 </p>
                 <div class="button-group">
-                    <button class="btn btn-primary">Check Symptoms</button>
+                    <button class="btn btn-primary" onclick="showSymptomChecker()">Check Symptoms</button>
                     <button class="btn btn-emergency">Emergency Help</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Symptom Checker Section -->
+        <section class="hero-section" id="symptom-section" style="display: none;">
+            <div class="hero-card">
+                <h2 class="card-title">Symptom Checker</h2>
+                <p class="card-text">Describe how you are feeling below.</p>
+                <div class="form-group" style="width: 100%; margin-bottom: 20px;">
+                    <textarea id="symptomsInput" rows="4" placeholder="e.g., I have a headache, fever, and chills" style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-charcoal); color: var(--text-cream); font-family: inherit; margin-top: 10px; font-size: 1rem; resize: vertical;"></textarea>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="analyzeSymptoms()">Analyze Symptoms</button>
+                    <button class="btn btn-emergency" onclick="showHome()">Cancel</button>
+                </div>
+                
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" style="display: none; margin-top: 20px; color: var(--accent-gold);">
+                    <p>Analyzing symptoms...</p>
+                </div>
+
+                <!-- Analysis Result Area -->
+                <div id="analysisResult" style="margin-top: 30px; display: none; text-align: left; background: var(--bg-charcoal); padding: 25px; border-radius: 8px; border: 1px solid var(--accent-green); animation: fadeIn 0.5s ease-out forwards;">
+                    <h3 style="color: var(--accent-gold); margin-bottom: 15px; font-family: 'Playfair Display', serif; font-size: 1.5rem;">Analysis Result</h3>
+                    <p style="margin-bottom: 10px; color: var(--text-muted);"><strong>Possible Condition:</strong> <span id="resDisease" style="color: var(--text-cream);"></span></p>
+                    <p style="margin-bottom: 10px; color: var(--text-muted);"><strong>Severity:</strong> <span id="resSeverity" style="color: var(--text-cream);"></span></p>
+                    <p style="color: var(--text-muted);"><strong>Recommendation:</strong> <span id="resRecommendation" style="color: var(--text-cream);"></span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section class="hero-section" id="recommendations-section" style="display: none;">
+            <div class="hero-card">
+                <h2 class="card-title">Recommendations</h2>
+                <p class="card-text">Your personalized health guidelines and past advice.</p>
+                <div id="recommendationsList" style="margin-top: 20px; text-align: left;">
+                    <div style="background: var(--bg-charcoal); padding: 25px; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <p style="color: var(--text-muted); font-style: italic;" id="defaultRecommendation">No recent analysis found. Stay hydrated, maintain a balanced diet, and get plenty of rest for optimal health.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Section -->
+        <section class="hero-section" id="emergency-section" style="display: none;">
+            <div class="hero-card">
+                <h2 class="card-title" style="color: #F44336;">Emergency Services</h2>
+                <p class="card-text">Immediate assistance when you need it most. Tap any service below.</p>
+                
+                <div class="emergency-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 25px;">
+                    <div class="emergency-card" style="background: var(--bg-charcoal); padding: 20px; border-radius: 8px; border: 1px solid #F44336; text-align: center;">
+                        <h3 style="color: var(--text-cream); margin-bottom: 10px;">🚑 Ambulance</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 15px;">Call 102 / 108 (Kolkata, WB)</p>
+                        <button class="btn btn-emergency" style="width: 100%;">Call Now</button>
+                    </div>
+                    <div class="emergency-card" style="background: var(--bg-charcoal); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+                        <h3 style="color: var(--text-cream); margin-bottom: 10px;">🩸 Blood Bank</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 15px;">Find nearby donors</p>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="findNearbyHelp('blood bank')">Search</button>
+                    </div>
+                    <div class="emergency-card" style="background: var(--bg-charcoal); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+                        <h3 style="color: var(--text-cream); margin-bottom: 10px;">💨 Oxygen Supply</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 15px;">Locate cylinders</p>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="findNearbyHelp('oxygen supply')">Locate</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                    <h3 style="color: var(--text-cream); margin-bottom: 15px;">Nearby Medical Help</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Find hospitals, clinics, and pharmacies in your vicinity.</p>
+                    <button class="btn btn-primary" onclick="findNearbyHelp()">📍 Find Help Near Me</button>
+                </div>
+
+                <!-- Loading Indicator -->
+                <div id="locationLoadingIndicator" style="display: none; margin-top: 20px; color: var(--accent-gold);">
+                    <p>Detecting location and searching for facilities...</p>
+                </div>
+
+                <!-- Nearby Help Results -->
+                <div id="nearbyHelpResults" style="margin-top: 30px; display: none; text-align: left; background: var(--bg-charcoal); padding: 25px; border-radius: 8px; border: 1px solid var(--accent-green); animation: fadeIn 0.5s ease-out forwards;">
+                    <h3 style="color: var(--accent-gold); margin-bottom: 15px; font-family: 'Playfair Display', serif; font-size: 1.5rem;">Local Facilities</h3>
+                    <div id="facilitiesList" style="color: var(--text-cream); line-height: 1.6;">
+                        <!-- Results injected here -->
+                    </div>
                 </div>
             </div>
         </section>

@@ -25,6 +25,7 @@ body {
     color: var(--text-cream);
     display: flex;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
@@ -58,6 +59,7 @@ h1, h2, h3, h4 {
     width: 65px;
     height: auto;
     margin-bottom: 15px;
+    border-radius: 50%;
 }
 
 .sidebar-logo h2 {
@@ -122,6 +124,7 @@ h1, h2, h3, h4 {
 .header-logo-img {
     width: 75px;
     height: auto;
+    border-radius: 50%;
     filter: drop-shadow(0 0 15px rgba(197, 168, 128, 0.15));
 }
 
@@ -147,11 +150,13 @@ h1, h2, h3, h4 {
     border-radius: 8px;
     border: 1px solid var(--border-color);
     box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.6s ease-out forwards;
 }
 
 .hero-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.8);
 }
 
 .card-title {
@@ -223,7 +228,13 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
     border-top: 3px solid var(--accent-green);
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
 }
+
+.info-card:nth-child(1) { animation-delay: 0.1s; }
+.info-card:nth-child(2) { animation-delay: 0.3s; }
+.info-card:nth-child(3) { animation-delay: 0.5s; }
 
 .info-card:hover {
     background-color: #222;
@@ -241,6 +252,17 @@ h1, h2, h3, h4 {
     font-size: 1rem;
     color: var(--text-muted);
     line-height: 1.6;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Responsive Design */
@@ -274,6 +296,101 @@ h1, h2, h3, h4 {
     }
 }
 
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px 0;
+    }
+    
+    .sidebar-logo {
+        flex-direction: row;
+        justify-content: center;
+        gap: 15px;
+        padding-bottom: 20px;
+        border-bottom: none;
+        margin-bottom: 10px;
+    }
+    
+    .sidebar-logo-img {
+        margin-bottom: 0;
+        width: 45px;
+    }
+    
+    .sidebar-logo h2 {
+        font-size: 1.3rem;
+        margin-top: 5px;
+    }
+    
+    .sidebar-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        padding: 0 10px;
+    }
+    
+    .sidebar-nav li {
+        margin-bottom: 0;
+    }
+    
+    .sidebar-nav a {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        border-radius: 4px;
+    }
+    
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+        border-left: none;
+        border-bottom: 2px solid var(--accent-gold);
+        background-color: transparent;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 25px 20px;
+        gap: 35px;
+    }
+    
+    .brand-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .brand-title {
+        font-size: 2.5rem;
+    }
+    
+    .tagline {
+        margin-left: 0;
+        font-size: 1.05rem;
+        margin-top: 5px;
+    }
+    
+    .hero-card {
+        padding: 30px 20px;
+    }
+    
+    .card-title {
+        font-size: 1.8rem;
+    }
+    
+    .card-text {
+        max-width: 100%;
+    }
+}
+
 /* --- LOGIN PAGE STYLES --- */
 .login-body {
     justify-content: center;
@@ -298,6 +415,7 @@ h1, h2, h3, h4 {
 .auth-logo {
     width: 75px;
     margin-bottom: 15px;
+    border-radius: 50%;
     filter: drop-shadow(0 0 15px rgba(197, 168, 128, 0.15));
 }
 
