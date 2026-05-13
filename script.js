@@ -152,16 +152,7 @@ async function findNearbyHelp(query = 'hospitals and clinics') {
     if (resultsDiv) resultsDiv.style.display = 'none';
     if (loading) loading.style.display = 'block';
 
-    if (!navigator.geolocation) {
-        alert("Geolocation is not supported by your browser.");
-        if (loading) loading.style.display = 'none';
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        
+    const callBackend = async (lat, lng) => {
         try {
             const response = await fetch('http://localhost:3000/api/nearby-help', {
                 method: 'POST',
@@ -177,7 +168,7 @@ async function findNearbyHelp(query = 'hospitals and clinics') {
             if (data.success) {
                 if (resultsDiv) resultsDiv.style.display = 'block';
                 // Convert markdown-style response or line breaks to HTML
-                const formattedHtml = data.facilities.replace(/\\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                const formattedHtml = data.facilities.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                 facilitiesList.innerHTML = `<p>Results for <strong>${query}</strong> near your location:</p><br>` + formattedHtml;
             } else {
                 alert(data.message || "Could not find nearby facilities.");
@@ -185,11 +176,40 @@ async function findNearbyHelp(query = 'hospitals and clinics') {
         } catch (err) {
             console.error("Error fetching nearby help:", err);
             if (loading) loading.style.display = 'none';
-            alert("Error connecting to server to find nearby help.");
+            alert("Error connecting to server to find nearby help. Please ensure the backend server is running.");
         }
-    }, (error) => {
-        console.error("Geolocation error:", error);
-        if (loading) loading.style.display = 'none';
-        alert("Unable to retrieve your location. Please ensure location permissions are granted.");
-    });
+    };
+
+    const fallbackToIP = async () => {
+        try {
+            console.log("Falling back to IP-based location...");
+            const ipRes = await fetch('https://ipapi.co/json/');
+            const ipData = await ipRes.json();
+            if (ipData && ipData.latitude && ipData.longitude) {
+                await callBackend(ipData.latitude, ipData.longitude);
+            } else {
+                throw new Error("Invalid IP location data");
+            }
+        } catch (ipErr) {
+            console.error("IP fallback failed:", ipErr);
+            if (loading) loading.style.display = 'none';
+            alert("Unable to retrieve your location via GPS or IP. Please check your connection.");
+        }
+    };
+
+    if (!navigator.geolocation) {
+        fallbackToIP();
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            callBackend(position.coords.latitude, position.coords.longitude);
+        }, 
+        (error) => {
+            console.warn("Geolocation blocked or failed. Using IP fallback:", error);
+            fallbackToIP();
+        }, 
+        { timeout: 7000 }
+    );
 }

@@ -6,17 +6,18 @@
 }
 
 :root {
-    /* Old Money Color Palette */
-    --bg-charcoal: #111111;      /* Deep black / charcoal */
-    --card-bg: #1a1a1a;          /* Slightly lighter dark background for cards */
-    --text-cream: #f4f1ea;       /* Off-white / cream text */
-    --text-muted: #b5b1a5;       /* Muted text for paragraphs */
-    --accent-gold: #c5a880;      /* Elegant Gold */
-    --accent-gold-hover: #e0c59f;
-    --accent-green: #3a4a3f;     /* Muted dark green */
-    --border-color: #2a2a2a;     
+    /* Clinical / Medical Color Palette */
+    --bg-charcoal: #f0f4f8;      /* Light blue-grey background */
+    --card-bg: #ffffff;          /* White cards */
+    --text-cream: #1a202c;       /* Dark text */
+    --text-muted: #4a5568;       /* Muted text for paragraphs */
+    --accent-gold: #2563eb;      /* Medical Blue */
+    --accent-gold-hover: #1d4ed8;
+    --accent-green: #e5e7eb;     /* Light grey borders/accents */
+    --border-color: #e2e8f0;     
+    --accent-red: #dc2626;       /* Urgent red */
     
-    font-family: 'Lora', serif; /* Elegant serif body font */
+    font-family: 'Outfit', sans-serif; /* Clean, warm sans-serif font */
     font-size: 16px;
 }
 
@@ -29,14 +30,14 @@ body {
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Playfair Display', serif; /* Elegant serif heading font */
+    font-family: 'Outfit', sans-serif;
     font-weight: 600;
 }
 
 /* Sidebar Layout */
 .sidebar {
     width: 250px;
-    background-color: #0a0a0a;
+    background-color: #ffffff;
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
@@ -92,8 +93,8 @@ h1, h2, h3, h4 {
 /* Sidebar Hover / Active Effects */
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
-    color: var(--text-cream);
-    background-color: rgba(197, 168, 128, 0.05); /* very faint gold tint background */
+    color: var(--accent-gold);
+    background-color: rgba(37, 99, 235, 0.05); /* faint blue tint background */
     border-left: 3px solid var(--accent-gold);
 }
 
@@ -131,15 +132,14 @@ h1, h2, h3, h4 {
 .brand-title {
     font-size: 3.2rem;
     color: var(--accent-gold);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-weight: 400;
+    letter-spacing: -0.5px;
+    font-weight: 700;
 }
 
 .tagline {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--text-muted);
-    font-style: italic;
+    font-weight: 400;
     margin-left: 100px;
 }
 
@@ -147,16 +147,16 @@ h1, h2, h3, h4 {
 .hero-card {
     background-color: var(--card-bg);
     padding: 50px;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeIn 0.6s ease-out forwards;
 }
 
 .hero-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 15px 50px rgba(0,0,0,0.8);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 .card-title {
@@ -181,7 +181,7 @@ h1, h2, h3, h4 {
 
 .btn {
     padding: 16px 32px;
-    font-family: 'Lora', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
@@ -193,25 +193,25 @@ h1, h2, h3, h4 {
 
 .btn-primary {
     background-color: var(--accent-gold);
-    color: #111;
+    color: #ffffff;
     border: 1px solid var(--accent-gold);
 }
 
 .btn-primary:hover {
     background-color: var(--accent-gold-hover);
-    box-shadow: 0 0 15px rgba(197, 168, 128, 0.2);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
 }
 
 .btn-emergency {
     background-color: transparent;
-    color: var(--text-cream);
-    border: 1px solid var(--text-muted);
+    color: var(--accent-red);
+    border: 1px solid var(--accent-red);
 }
 
 .btn-emergency:hover {
-    background-color: rgba(255, 60, 60, 0.05); /* Subtle red tint */
-    color: #ff6b6b;
-    border-color: #ff6b6b;
+    background-color: rgba(220, 38, 38, 0.05); /* Subtle red tint */
+    color: #b91c1c;
+    border-color: #b91c1c;
 }
 
 /* Small Info Cards Section */
@@ -237,9 +237,9 @@ h1, h2, h3, h4 {
 .info-card:nth-child(3) { animation-delay: 0.5s; }
 
 .info-card:hover {
-    background-color: #222;
+    background-color: #f8fafc;
     transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 .info-card h3 {
